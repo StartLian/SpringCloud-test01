@@ -7,7 +7,7 @@ server:
 
 eureka:
   instance:
-    hostname: localhost
+    hostname: server1
   client:
     #表示是否从 Eureka server 中获取注册信息，默认是 true
     fetch-registry: false
