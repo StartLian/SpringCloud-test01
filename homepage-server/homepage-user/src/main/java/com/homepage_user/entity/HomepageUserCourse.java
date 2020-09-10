@@ -93,5 +93,11 @@ public class HomepageUserCourse {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+
+	@Override
+	public String toString() {
+		return "HomepageUserCourse [id=" + id + ", userId=" + userId + ", courseId=" + courseId + ", createTime="
+				+ createTime + ", updateTime=" + updateTime + "]";
+	}
     
 }

@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.github.andrewoma.dexx.collection.ArrayList;
 import com.homepage.common.CourseInfo;
 import com.homepage.common.CourseInfosRequest;
 import com.homepage.common.UserInfo;
@@ -31,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class UserServiceImpl implements IUserService {
-
+	Logger log = (Logger) LoggerFactory.getLogger(UserServiceImpl.class);
     /** HomepageUser Dao */
     private final HomepageUserDao homepageUserDao;
 
@@ -55,16 +56,22 @@ public class UserServiceImpl implements IUserService {
             return UserInfo.invalid();
         }
 
+        log.info("request.getUsername():{}",request.getUsername());
         HomepageUser oldUser = homepageUserDao.findByUsername(request.getUsername());
+        log.info("000");
         if (null != oldUser) {
+        	log.info("oldUser:{}",oldUser.toString());
             return UserInfo.invalid();
         }
-
+        log.info("111");
         HomepageUser newUser = homepageUserDao.save(new HomepageUser(
                 request.getUsername(), request.getEmail()
         ));
-
-        return new UserInfo(newUser.getId(), newUser.getUsername(), newUser.getEmail());
+        log.info("222");
+        log.info("newUser:{}",newUser.toString());
+        UserInfo userInfo = new UserInfo(newUser.getId(), newUser.getUsername(), newUser.getEmail());
+        log.info("userInfo:{}",userInfo.toString());
+        return userInfo;
     }
 
     @Override
@@ -92,18 +99,29 @@ public class UserServiceImpl implements IUserService {
                 homepageUser.getEmail());
 
         List<HomepageUserCourse> userCourses = homepageUserCourseDao.findAllByUserId(id);
+        log.info("userCourses:{}",userCourses.toString());
         if (CollectionUtils.isEmpty(userCourses)) {
             return new UserCourseInfo(userInfo, Collections.emptyList());
         }
-        ArrayList<Long> arrayList = new ArrayList<>();
-        for (HomepageUserCourse homepageUserCourse : userCourses) {
-        	arrayList.append(homepageUserCourse.getId());
-		}
+//        List<Long> arrayList = new List();
+//        for (HomepageUserCourse homepageUserCourse : userCourses) {
+//        	arrayList.append(homepageUserCourse.getId());
+//		}
+//        
+//        log.info("arrayList:{}",arrayList.toString());
+//        List<CourseInfo> courseInfos = courseClient.getCourseInfos(
+//                new CourseInfosRequest((List<Long>) arrayList)
+//                );
+        CourseInfo courseInfo = courseClient.getCourseInfo(15L);
+        log.info("courseInfo:{}",courseInfo);
+        List<Long> collect = userCourses.stream().map(HomepageUserCourse::getCourseId).collect(Collectors.toList());
+        log.info("collect:{}",collect.toString());
         List<CourseInfo> courseInfos = courseClient.getCourseInfos(
-                new CourseInfosRequest((List<Long>) arrayList)
-                );
-        
-
+                new CourseInfosRequest(
+                        userCourses.stream().map(HomepageUserCourse::getCourseId).collect(Collectors.toList())
+                )
+        );
+        log.info("courseInfos:{}",courseInfos);
         return new UserCourseInfo(userInfo, courseInfos);
     }
 

@@ -23,7 +23,28 @@ public class UserCourseInfo {
     private List<CourseInfo> courseInfos;
 
     
-    public UserCourseInfo(UserInfo userInfo, List<CourseInfo> courseInfos) {
+    
+    public UserInfo getUserInfo() {
+		return userInfo;
+	}
+
+
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
+	}
+
+
+	public List<CourseInfo> getCourseInfos() {
+		return courseInfos;
+	}
+
+
+	public void setCourseInfos(List<CourseInfo> courseInfos) {
+		this.courseInfos = courseInfos;
+	}
+
+
+	public UserCourseInfo(UserInfo userInfo, List<CourseInfo> courseInfos) {
 		this.userInfo = userInfo;
 		this.courseInfos = courseInfos;
 	}

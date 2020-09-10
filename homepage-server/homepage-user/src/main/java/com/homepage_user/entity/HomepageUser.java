@@ -103,6 +103,19 @@ public class HomepageUser {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+
+	public HomepageUser(Long id, String username, String email, Date createTime, Date updateTime) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.createTime = createTime;
+		this.updateTime = updateTime;
+	}
+
+	public HomepageUser() {
+		super();
+	}
     
     
 }

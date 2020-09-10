@@ -50,4 +50,18 @@ public class CreateUserRequest {
 
         return StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(email);
     }
+
+
+	@Override
+	public String toString() {
+		return "CreateUserRequest [username=" + username + ", email=" + email + "]";
+	}
+
+
+	public CreateUserRequest(String username, String email) {
+		super();
+		this.username = username;
+		this.email = email;
+	}
+    
 }

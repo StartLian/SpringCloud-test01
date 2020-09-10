@@ -1,5 +1,7 @@
 package com.homepage_user.controller;
 
+import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.homepage.common.UserInfo;
 import com.homepage_user.service.IUserService;
 import com.homepage_user.vo.CreateUserRequest;
@@ -43,9 +47,12 @@ public class HomepageUserController {
      * */
     @PostMapping("/create/user")
     public UserInfo createUser(@RequestBody CreateUserRequest request) {
-
+    	HashMap<String,Object> hashMap = new HashMap<>();
         log.info("<homepage-user>: create user -> {}", JSON.toJSONString(request));
-        return userService.createUser(request);
+        UserInfo createUser = userService.createUser(request);
+        log.info("<homepage-user>: create user createUser-> {}", createUser.toString());
+        hashMap.put("createUser", createUser);
+        return createUser;
     }
 
     /**
